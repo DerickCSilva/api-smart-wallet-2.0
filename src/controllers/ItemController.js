@@ -35,8 +35,10 @@ class ItemController {
             }
 
         } catch (err) {
-            return res.status(status.BAD_REQUEST).json({
+            console.log(err);
+            return res.status(status.INTERNAL_SERVER_ERROR).json({
                 status: res.statusCode,
+                statusKey: statusKey.INTERNAL_SERVER_ERROR,
                 message: err
             });
         }
@@ -49,8 +51,10 @@ class ItemController {
                 message: 'Item registrado.'
             });
         } catch (err) {
+            console.log(err);
             return res.status(status.INTERNAL_SERVER_ERROR).json({
                 status: res.statusCode,
+                statusKey: statusKey.INTERNAL_SERVER_ERROR,
                 message: err
             });
         }
@@ -89,10 +93,12 @@ class ItemController {
                 message: 'Registro incluso com sucesso.'
             });
         } catch (err) {
+            console.log(err);
             return res.status(status.INTERNAL_SERVER_ERROR).json({
                 status: res.statusCode,
+                statusKey: statusKey.INTERNAL_SERVER_ERROR,
                 message: err
-            });            
+            });        
         }
     }
 }
