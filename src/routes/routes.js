@@ -9,9 +9,10 @@ let ItemController = require("../controllers/ItemController");
 router.get('/', IndexController.index);
 
 // Rotas Categorias
-router.post('/category', CategoryController.create);
+router.post('/category', CategoryController.createCategory);
 
 // Rotas Items
-router.post('/item', ItemController.create);
+router.post('/item', ItemController.createItem);
+router.post('/item/registro', ItemController.createRecord);
 
 module.exports = router;

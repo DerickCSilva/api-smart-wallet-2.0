@@ -13,6 +13,10 @@ const RegItems = connection.define('reg_items', {
     desc: {
         type: Sequelize.STRING,
         allowNull: false
+    },
+    date: {
+        type: Sequelize.DATEONLY,
+        allowNull: false
     }
 });
 

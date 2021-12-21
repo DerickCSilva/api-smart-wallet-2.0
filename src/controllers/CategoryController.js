@@ -10,7 +10,7 @@ const { existsOrError } = require('../functions/Validation');
 // class CategoryController
 class CategoryController {
     // Função que cria uma categoria
-    async create(req, res) {
+    async createCategory(req, res) {
         let { name, type, pre_pos } = req.body;
 
         try {

@@ -3,6 +3,7 @@ const status = require('http-status-codes');
 
 // Models
 const Item = require('../models/Item');
+const RegItem = require('../models/RegItem');
 const Category = require('../models/Category');
 
 // Functions
@@ -11,7 +12,7 @@ const { existsOrError } = require('../functions/Validation');
 // class ItemController
 class ItemController {
     // Função que cria um item
-    async create(req, res) {
+    async createItem(req, res) {
         let { categoryId, name } = req.body;
 
         try {
@@ -20,11 +21,11 @@ class ItemController {
 
             let item = await Item.findOne({ where: { name } });
             let category = await Category.findOne({ where: { id: categoryId } });
-
+            
             if (item) {
                 return res.status(status.BAD_REQUEST).json({
                     status: res.statusCode,
-                    message: 'Já existe um item com esse nome.'
+                    message: `Já existe um item com esse nome na categoria ${category.name}`
                 });
             } else if (!category) {
                 return res.status(status.BAD_REQUEST).json({
@@ -52,6 +53,46 @@ class ItemController {
                 status: res.statusCode,
                 message: err
             });
+        }
+    }
+
+    // Função que cria um registro em um item
+    async createRecord(req, res) {
+        let { itemId, value, desc, date } = req.body;
+
+        try {
+            await existsOrError(itemId, 'ID do Item não informado!');
+            await existsOrError(value, 'Valor do registro não informado!');
+            await existsOrError(desc, 'Descrição do registro não informado!');
+            await existsOrError(date, 'Data do registro não informado!');
+
+            let item = await Item.findOne({ where: { id: itemId } });
+            
+            if (!item) {
+                return res.status(status.BAD_REQUEST).json({
+                    status: res.statusCode,
+                    message: 'Item inexistente.'
+                });
+            }
+        } catch (err) {
+            return res.status(status.BAD_REQUEST).json({
+                status: res.statusCode,
+                message: err
+            });
+        }
+
+        try {
+            await RegItem.create({ ...req.body });
+
+            return res.status(status.CREATED).json({
+                status: res.statusCode,
+                message: 'Registro incluso com sucesso.'
+            });
+        } catch (err) {
+            return res.status(status.INTERNAL_SERVER_ERROR).json({
+                status: res.statusCode,
+                message: err
+            });            
         }
     }
 }
