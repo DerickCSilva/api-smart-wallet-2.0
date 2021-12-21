@@ -37,7 +37,7 @@ class CategoryController {
         try {
             await Category.create({ ...req.body });
 
-            return res.status(status.OK).json({
+            return res.status(status.CREATED).json({
                 status: res.statusCode,
                 message: 'Categoria registrada.'
             });
