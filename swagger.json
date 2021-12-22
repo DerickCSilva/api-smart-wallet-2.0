@@ -1,0 +1,212 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "SmartWallet API",
+        "description": "Documentação de um simples gerenciador financeiro.",
+        "version": "3.0.0"
+    },
+    "basePath": "/",
+    "tags": [
+        {
+            "name": "category-controller",
+            "description": "Category Controller"
+        },
+        {
+            "name": "item-controller",
+            "description": "Item Controller"
+        }
+    ],
+    "paths": {
+        "/api/category": {
+            "post": {
+                "description": "Serviço responsável por criar categoria.",
+                "summary": "Cria categoria",
+                "tags": [
+                    "category-controller"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "type": {
+                                        "type": "string"
+                                    },
+                                    "pre_pos": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "name": "Receitas",
+                                    "type": "receita",
+                                    "pre_pos": "pre"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "<b>RECORD_SUCCESS</b> - <i>Categoria registrada.</i>"
+                    },
+                    "400": {
+                        "description": "<b>DATA_EXISTS</b> - <i>Já existe uma categoria com esse nome.</i><br><b>DATA_NOT_INFORMED</b> - <i>Dado não informado na requisição.</i>"
+                    },
+                    "500": {
+                        "description": "<b>INTERNAL_SERVER_ERROR</b> - <i>Erro no servidor.</i>"
+                    }
+                }
+            },
+            "put": {
+                "description": "Serviço responsável por editar uma categoria.",
+                "summary": "Edita categoria",
+                "tags": [
+                    "category-controller"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "number"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "type": {
+                                        "type": "string"
+                                    },
+                                    "pre_pos": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "id": 1,
+                                    "name": "Receitas",
+                                    "type": "receita",
+                                    "pre_pos": "pre"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "<b>UPDATED_SUCCESS</b> - <i>Categoria alterada com sucesso.</i>"
+                    },
+                    "400": {
+                        "description": "<b>DATA_NOT_INFORMED</b> - <i>Dado não informado na requisição.</i><br><b>DATA_EXISTS</b> - <i>Já existe uma categoria com esse nome.</i>"
+                    },
+                    "404": {
+                        "description": "<b>DATA_NOT_FOUND</b> - <i>Categoria não encontrada.</i>"
+                    },
+                    "500": {
+                        "description": "<b>INTERNAL_SERVER_ERROR</b> - <i>Erro no servidor.</i>"
+                    }
+                }
+            }
+        },
+        "/api/item": {
+            "post": {
+                "description": "Serviço responsável por criar um item.",
+                "summary": "Cria item da categoria",
+                "tags": [
+                    "item-controller"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "categoryId": {
+                                        "type": "number"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "categoryId": 1,
+                                    "name": "Salário"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "<b>RECORD_SUCCESS</b> - <i>Item registrado.</i>"
+                    },
+                    "400": {
+                        "description": "<b>DATA_EXISTS</b> - <i>Já existe um item com esse nome na categoria {nomeDaCategoria}.</i><br><b>DATA_NOT_INFORMED</b> - <i>Dado não informado na requisição.</i>"
+                    },
+                    "404": {
+                        "description": "<b>DATA_NOT_FOUND</b> - <i>Categoria inexistente.</i>"
+                    },
+                    "500": {
+                        "description": "<b>INTERNAL_SERVER_ERROR</b> - <i>Erro no servidor.</i>"
+                    }
+                }
+            }
+        },
+        "/api/item/record": {
+            "post": {
+                "description": "Serviço responsável por criar um registro no item.",
+                "summary": "Cria registro no item",
+                "tags": [
+                    "item-controller"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "itemId": {
+                                        "type": "number"
+                                    },
+                                    "value": {
+                                        "type": "string"
+                                    },
+                                    "desc": {
+                                        "type": "string"
+                                    },
+                                    "date": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "itemId": 1,
+                                    "value": "Cabelo",
+                                    "desc": "Cortei o cabelo dia 8",
+                                    "date": "2021-12"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "<b>RECORD_SUCCESS</b> - <i>Registro incluso com sucesso.</i>"
+                    },
+                    "400": {
+                        "description": "<b>DATA_NOT_INFORMED</b> - <i>Dado não informado na requisição.</i>"
+                    },
+                    "404": {
+                        "description": "<b>DATA_NOT_FOUND</b> - <i>Item inexistente.</i>"
+                    },
+                    "500": {
+                        "description": "<b>INTERNAL_SERVER_ERROR</b> - <i>Erro no servidor.</i>"
+                    }
+                }
+            }
+        }
+    }
+}

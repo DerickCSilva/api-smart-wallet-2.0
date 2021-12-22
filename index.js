@@ -6,6 +6,10 @@ const cors = require('cors');
 const app = express();
 const connection = require('./src/database/connection');
 
+// Swagger
+const swaggerUI = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
+
 // Routes
 const routes = require('./src/routes/routes');
 
@@ -27,10 +31,11 @@ connection
     .then(() => console.log('Conexão feita com sucesso!'))
     .catch(err => console.log(err));
 
-// Using Cors, Morgan and Routes
+// Using Cors, Morgan, Routes ans Swagger
 app.use(cors());
 app.use(morgan('dev'));
 app.use('/api', routes);
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 // Listen on port 3434
 app.listen(3000, () => {

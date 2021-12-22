@@ -17,9 +17,9 @@ class CategoryController {
         let { name, type, pre_pos } = req.body;
 
         try {
-            await existsOrError(name, 'Nome da categoria não informada!');
-            await existsOrError(type, 'Tipo da categoria não informado!');
-            await existsOrError(pre_pos, 'PRE/POS Investimentos não informado!');
+            await existsOrError(name, 'Nome da categoria não informada.');
+            await existsOrError(type, 'Tipo da categoria não informado.');
+            await existsOrError(pre_pos, 'PRE/POS Investimentos não informado.');
 
             let category = await Category.findOne({ where: { name } });
 
@@ -62,10 +62,10 @@ class CategoryController {
         let { id, name, type, pre_pos } = req.body;
 
         try {
-            await existsOrError(id, 'ID da Categoria não informada!');
-            await existsOrError(name, 'Nome da categoria não informada!');
-            await existsOrError(type, 'Tipo da categoria não informado!');
-            await existsOrError(pre_pos, 'PRE/POS Investimentos não informado!');
+            await existsOrError(id, 'ID da Categoria não informada.');
+            await existsOrError(name, 'Nome da categoria não informada.');
+            await existsOrError(type, 'Tipo da categoria não informado.');
+            await existsOrError(pre_pos, 'PRE/POS Investimentos não informado.');
             
             let category = await Category.findOne({ where: { id } });
             
@@ -73,7 +73,7 @@ class CategoryController {
                 return res.status(status.NOT_FOUND).json({
                     status: res.statusCode,
                     statusCode: statusKey.DATA_NOT_FOUND,
-                    message: 'Categoria não encontrada!'
+                    message: 'Categoria não encontrada.'
                 });
             }
         } catch (err) {
@@ -94,10 +94,10 @@ class CategoryController {
                 return res.status(status.OK).json({
                     status: res.statusCode,
                     statusKey: statusKey.UPDATED_SUCCESS,
-                    message: 'Categoria alterada com sucesso!'
+                    message: 'Categoria alterada com sucesso.'
                 });
             } else {
-                return res.status(status.NOT_FOUND).json({
+                return res.status(status.BAD_REQUEST).json({
                     status: res.statusCode,
                     statusCode: statusKey.DATA_EXISTS,
                     message: 'Já existe uma categoria com esse nome.'
