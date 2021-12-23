@@ -16,5 +16,6 @@ router.put('/category', CategoryController.editCategory);
 // Rotas Items
 router.post('/item', ItemController.createItem);
 router.post('/item/record', ItemController.createRecord);
+router.put('/item', ItemController.editItem);
 
 module.exports = router;

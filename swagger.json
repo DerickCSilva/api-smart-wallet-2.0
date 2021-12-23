@@ -154,6 +154,52 @@
                         "description": "<b>INTERNAL_SERVER_ERROR</b> - <i>Erro no servidor.</i>"
                     }
                 }
+            },
+            "put": {
+                "description": "Serviço responsável por editar um item.",
+                "summary": "Edita item da categoria",
+                "tags": [
+                    "item-controller"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "number"
+                                    },
+                                    "categoryId": {
+                                        "type": "number"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "id": 1,
+                                    "categoryId": 2,
+                                    "name": "Cabelo"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "<b>UPDATED_SUCCESS</b> - <i>Item alterado com sucesso.</i>"
+                    },
+                    "400": {
+                        "description": "<b>DATA_EXISTS</b> - <i>Já existe um item com esse nome na categoria {nomeDaCategoria}.</i><br><b>DATA_NOT_INFORMED</b> - <i>Dado não informado na requisição.</i>"
+                    },
+                    "404": {
+                        "description": "<b>DATA_NOT_FOUND</b> - <i>Item não encontrado.</i><br><b>DATA_NOT_FOUND</b> - <i>Categoria inexistente.</i>"
+                    },
+                    "500": {
+                        "description": "<b>INTERNAL_SERVER_ERROR</b> - <i>Erro no servidor.</i>"
+                    }
+                }
             }
         },
         "/api/item/record": {

@@ -24,7 +24,7 @@ class ItemController {
 
             let item = await Item.findOne({ where: { name } });
             let category = await Category.findOne({ where: { id: categoryId } });
-            
+
             if (item) {
                 return res.status(status.BAD_REQUEST).json({
                     status: res.statusCode,
@@ -77,7 +77,7 @@ class ItemController {
             await existsOrError(date, 'Data do registro não informado.');
 
             let item = await Item.findOne({ where: { id: itemId } });
-            
+
             if (!item) {
                 return res.status(status.NOT_FOUND).json({
                     status: res.statusCode,
@@ -107,7 +107,70 @@ class ItemController {
                 status: res.statusCode,
                 statusKey: statusKey.INTERNAL_SERVER_ERROR,
                 message: err
-            });        
+            });
+        }
+    }
+
+    // Função que edita um item
+    async editItem(req, res) {
+        let { id, categoryId, name } = req.body;
+        
+        let category = await Category.findOne({ where: { id: categoryId } });
+
+        try {
+            await existsOrError(id, 'ID do Item não informado.');
+            await existsOrError(categoryId, 'ID da Categoria não informado.');
+            await existsOrError(name, 'Nome do item não informado.');
+
+            let item = await Item.findOne({ where: { id } });
+
+            if (!item) {
+                return res.status(status.NOT_FOUND).json({
+                    status: res.statusCode,
+                    statusCode: statusKey.DATA_NOT_FOUND,
+                    message: 'Item não encontrado.'
+                });
+            } else if (!category) {
+                return res.status(status.NOT_FOUND).json({
+                    status: res.statusCode,
+                    statusKey: statusKey.DATA_NOT_FOUND,
+                    message: 'Categoria inexistente.'
+                });
+            }
+        } catch (err) {
+            return res.status(status.BAD_REQUEST).json({
+                status: res.statusCode,
+                statusKey: statusKey.DATA_NOT_INFORMED,
+                message: err
+            });
+        }
+
+        try {
+            let item = await Item.findOne({ where: { name } });
+
+            if (!item) {
+                delete req.body.id;
+                await Item.update({ ...req.body }, { where: { id } });
+
+                return res.status(status.OK).json({
+                    status: res.statusCode,
+                    statusKey: statusKey.UPDATED_SUCCESS,
+                    message: 'Item alterado com sucesso.'
+                });
+            } else {
+                return res.status(status.BAD_REQUEST).json({
+                    status: res.statusCode,
+                    statusCode: statusKey.DATA_EXISTS,
+                    message: `Já existe um item com esse nome na categoria ${category.name}.`
+                });
+            }
+        } catch (err) {
+            console.log(err);
+            return res.status(status.INTERNAL_SERVER_ERROR).json({
+                status: res.statusCode,
+                statusKey: statusKey.INTERNAL_SERVER_ERROR,
+                message: err
+            });
         }
     }
 }
