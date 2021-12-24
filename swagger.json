@@ -1,9 +1,9 @@
 {
-    "openapi": "3.0.0",
+    "openapi": "3.0.1",
     "info": {
         "title": "SmartWallet API",
         "description": "Documentação de um simples gerenciador financeiro.",
-        "version": "3.0.0"
+        "version": "3.0.1"
     },
     "basePath": "/",
     "tags": [
@@ -105,6 +105,41 @@
                     },
                     "404": {
                         "description": "<b>DATA_NOT_FOUND</b> - <i>Categoria não encontrada.</i>"
+                    },
+                    "500": {
+                        "description": "<b>INTERNAL_SERVER_ERROR</b> - <i>Erro no servidor.</i>"
+                    }
+                }
+            }
+        },
+        "/api/category/{id}": {
+            "delete": {
+                "description": "Serviço responsável por deletar uma categoria.",
+                "summary": "Deleta categoria",
+                "tags": [
+                    "category-controller"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": "true",
+                        "type": "string",
+                        "description": "Parâmetro que identifica a categoria selecionada."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "<b>DATA_DELETED</b> - <i>Categoria deletada com sucessso.</i>"
+                    },
+                    "400": {
+                        "description": "<b>DATA_NOT_INFORMED</b> - <i>Dado não informado na requisição.</i><br><b>DATA_EXISTS</b> - <i>Já existe uma categoria com esse nome.</i>"
+                    },
+                    "404": {
+                        "description": "<b>DATA_NOT_FOUND</b> - <i>Categoria inexistente.</i>"
+                    },
+                    "409": {
+                        "description": "<b>DATA_CONFLICT</b> - <i>Existe Itens inclusos nessa categoria. Apagá-la pode fazer com que dê conflito no sistema.</i><br>[Retorna os itens da categoria]"
                     },
                     "500": {
                         "description": "<b>INTERNAL_SERVER_ERROR</b> - <i>Erro no servidor.</i>"

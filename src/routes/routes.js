@@ -12,6 +12,7 @@ router.get('/', IndexController.index);
 // Rotas Categorias
 router.post('/category', CategoryController.createCategory);
 router.put('/category', CategoryController.editCategory);
+router.delete('/category/:id', CategoryController.deleteCategory);
 
 // Rotas Items
 router.post('/item', ItemController.createItem);

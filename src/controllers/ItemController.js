@@ -61,7 +61,7 @@ class ItemController {
             return res.status(status.INTERNAL_SERVER_ERROR).json({
                 status: res.statusCode,
                 statusKey: statusKey.INTERNAL_SERVER_ERROR,
-                message: err
+                message: err.message
             });
         }
     }
@@ -106,7 +106,7 @@ class ItemController {
             return res.status(status.INTERNAL_SERVER_ERROR).json({
                 status: res.statusCode,
                 statusKey: statusKey.INTERNAL_SERVER_ERROR,
-                message: err
+                message: err.message
             });
         }
     }
@@ -169,7 +169,7 @@ class ItemController {
             return res.status(status.INTERNAL_SERVER_ERROR).json({
                 status: res.statusCode,
                 statusKey: statusKey.INTERNAL_SERVER_ERROR,
-                message: err
+                message: err.message
             });
         }
     }
@@ -217,7 +217,7 @@ class ItemController {
             return res.status(status.INTERNAL_SERVER_ERROR).json({
                 status: res.statusCode,
                 statusKey: statusKey.INTERNAL_SERVER_ERROR,
-                message: err
+                message: err.message
             });
         }
     }
