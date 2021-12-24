@@ -125,6 +125,7 @@
                         "name": "id",
                         "required": "true",
                         "type": "string",
+                        "value": "1",
                         "description": "Parâmetro que identifica a categoria selecionada."
                     }
                 ],
@@ -230,6 +231,43 @@
                     },
                     "404": {
                         "description": "<b>DATA_NOT_FOUND</b> - <i>Item não encontrado.</i><br><b>DATA_NOT_FOUND</b> - <i>Categoria inexistente.</i>"
+                    },
+                    "500": {
+                        "description": "<b>INTERNAL_SERVER_ERROR</b> - <i>Erro no servidor.</i>"
+                    }
+                }
+            }
+        },
+        
+        "/api/item/{id}": {
+            "delete": {
+                "description": "Serviço responsável por deletar um item.",
+                "summary": "Deleta item",
+                "tags": [
+                    "item-controller"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": "true",
+                        "type": "string",
+                        "value": "1",
+                        "description": "Parâmetro que identifica o item selecionada."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "<b>DATA_DELETED</b> - <i>Item deletado com sucessso.</i>"
+                    },
+                    "400": {
+                        "description": "<b>DATA_NOT_INFORMED</b> - <i>Dado não informado na requisição.</i><br><b>DATA_EXISTS</b> - <i>Já existe uma categoria com esse nome.</i>"
+                    },
+                    "404": {
+                        "description": "<b>DATA_NOT_FOUND</b> - <i>Item inexistente.</i>"
+                    },
+                    "409": {
+                        "description": "<b>DATA_CONFLICT</b> - <i>Existe registros inclusos nesse categoria. Apagá-la pode fazer com que dê conflito no sistema.</i><br>[Retorna os registros desse item]"
                     },
                     "500": {
                         "description": "<b>INTERNAL_SERVER_ERROR</b> - <i>Erro no servidor.</i>"

@@ -19,5 +19,6 @@ router.post('/item', ItemController.createItem);
 router.post('/item/record', ItemController.createRecord);
 router.put('/item', ItemController.editItem);
 router.put('/item/record', ItemController.editRecord);
+router.delete('/item/:id', ItemController.deleteItem);
 
 module.exports = router;

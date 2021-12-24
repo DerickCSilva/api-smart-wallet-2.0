@@ -133,6 +133,7 @@ class CategoryController {
 
             if (category) {
                 let items = category.items;
+                
                 if (items.length == 0) {
                     await Category.destroy({ where: { id } });
 

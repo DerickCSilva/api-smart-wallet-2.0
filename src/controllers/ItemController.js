@@ -221,6 +221,60 @@ class ItemController {
             });
         }
     }
+
+    // Função que deleta um item
+    async deleteItem(req, res) {
+        let { id } = req.params;
+
+        try {
+            await existsOrError(id, 'ID do item não informado.');
+        } catch (err) {
+            return res.status(status.BAD_REQUEST).json({
+                status: res.statusCode,
+                statusKey: statusKey.DATA_NOT_INFORMED,
+                message: err
+            });
+        }
+
+        try {
+            let item = await Item.findOne({ where: { id }, include: [{ model: RegItem }] });
+            
+            if (item) {
+                let reg_items = item.reg_items;
+
+                if (reg_items.length == 0) {
+                    await Item.destroy({ where: { id } });
+
+                    return res.status(status.OK).json({
+                        status: res.statusCode,
+                        statusKey: statusKey.DATA_DELETED,
+                        message: 'Item deletado com sucessso.'
+                    });
+                } else {
+                    return res.status(status.CONFLICT).json({
+                        status: res.statusCode,
+                        statusKey: statusKey.DATA_CONFLICT,
+                        message: 'Existe registros inclusos nesse item. Apagá-lo pode fazer com que dê conflito no sistema.',
+                        reg_items
+                    });
+                }
+            } else {
+                return res.status(status.NOT_FOUND).json({
+                    status: res.statusCode,
+                    statusKey: statusKey.DATA_NOT_FOUND,
+                    message: 'Item inexistente.'
+                });
+            }
+        } catch (err) {
+            console.log(err);
+            return res.status(status.INTERNAL_SERVER_ERROR).json({
+                status: res.statusCode,
+                statusKey: statusKey.INTERNAL_SERVER_ERROR,
+                message: err.message
+            });
+        }
+        
+    }
 }
 
 module.exports = new ItemController();
