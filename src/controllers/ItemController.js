@@ -114,7 +114,7 @@ class ItemController {
     // Função que edita um item
     async editItem(req, res) {
         let { id, categoryId, name } = req.body;
-        
+
         let category = await Category.findOne({ where: { id: categoryId } });
 
         try {
@@ -164,6 +164,54 @@ class ItemController {
                     message: `Já existe um item com esse nome na categoria ${category.name}.`
                 });
             }
+        } catch (err) {
+            console.log(err);
+            return res.status(status.INTERNAL_SERVER_ERROR).json({
+                status: res.statusCode,
+                statusKey: statusKey.INTERNAL_SERVER_ERROR,
+                message: err
+            });
+        }
+    }
+
+    // Função que edita um registro de um item
+    async editRecord(req, res) {
+        let { id, value, desc, date } = req.body;
+        let record;
+
+        try {
+            await existsOrError(id, 'ID do registro não informado.');
+            await existsOrError(value, 'Valor do registro não informado.');
+            await existsOrError(desc, 'Descrição do registro não informado.');
+            await existsOrError(date, 'Data do registro não informado.');
+
+            record = await RegItem.findOne({ where: { id } });
+
+            if (!record) {
+                return res.status(status.NOT_FOUND).json({
+                    status: res.statusCode,
+                    statusKey: statusKey.DATA_NOT_FOUND,
+                    message: 'Registro inexistente.'
+                });
+            }
+        } catch (err) {
+            return res.status(status.BAD_REQUEST).json({
+                status: res.statusCode,
+                statusKey: statusKey.DATA_NOT_INFORMED,
+                message: err
+            });
+        }
+
+        try {
+            let item = await Item.findOne({ where: { id: record.itemId } });
+
+            await RegItem.update({ ...req.body }, { where: { id } });
+
+            return res.status(status.OK).json({
+                status: res.statusCode,
+                statusKey: statusKey.UPDATED_SUCCESS,
+                message: `Registro do Item ${item.name} alterado com sucessso.`
+            })
         } catch (err) {
             console.log(err);
             return res.status(status.INTERNAL_SERVER_ERROR).json({

@@ -17,5 +17,6 @@ router.put('/category', CategoryController.editCategory);
 router.post('/item', ItemController.createItem);
 router.post('/item/record', ItemController.createRecord);
 router.put('/item', ItemController.editItem);
+router.put('/item/record', ItemController.editRecord);
 
 module.exports = router;

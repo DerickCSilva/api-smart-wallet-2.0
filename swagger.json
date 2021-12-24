@@ -252,6 +252,56 @@
                         "description": "<b>INTERNAL_SERVER_ERROR</b> - <i>Erro no servidor.</i>"
                     }
                 }
+            },
+            "put": {
+                "description": "Serviço responsável por editar um registro de um item.",
+                "summary": "Edita registro de um item",
+                "tags": [
+                    "item-controller"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "number"
+                                    },
+                                    "value": {
+                                        "type": "string"
+                                    },
+                                    "desc": {
+                                        "type": "string"
+                                    },
+                                    "date": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "id": 1,
+                                    "value": "10",
+                                    "desc": "Pagamento do mês de Dezembro",
+                                    "date": "2021-12-05"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "<b>UPDATED_SUCCESS</b> - <i>Registro do Item {nomeDoItem} alterado com sucessso.</i>"
+                    },
+                    "400": {
+                        "description": "<b>DATA_NOT_INFORMED</b> - <i>Dado não informado na requisição.</i>"
+                    },
+                    "404": {
+                        "description": "<b>DATA_NOT_FOUND</b> - <i>Registro inexistente.</i>"
+                    },
+                    "500": {
+                        "description": "<b>INTERNAL_SERVER_ERROR</b> - <i>Erro no servidor.</i>"
+                    }
+                }
             }
         }
     }
