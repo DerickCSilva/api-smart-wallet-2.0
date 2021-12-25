@@ -142,9 +142,9 @@
                 }
             }
         },
-        "/api/category/{id}": {            
+        "/api/category/{id}": {
             "get": {
-                "description": "Serviço responsável por buscar um categoria.",
+                "description": "Serviço responsável por buscar uma categoria.",
                 "summary": "Busca uma categoria",
                 "tags": [
                     "category-controller"
@@ -161,10 +161,13 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "<b>REQUEST_SUCCESS</b> - <i>Categorias da página {paginaAtual}.</i>"
+                        "description": "<b>REQUEST_SUCCESS</b> - <i>Busca realizada com sucesso.</i>"
                     },
                     "400": {
-                        "description": "<b>DATA_INVALID</b> - <i>Número da página inválida.</i>"
+                        "description": "<b>DATA_INVALID</b> - <i>ID da Categoria inválido.</i>"
+                    },
+                    "400": {
+                        "description": "<b>DATA_NOT_FOUND</b> - <i>Categoria inexistente.</i>"
                     },
                     "500": {
                         "description": "<b>INTERNAL_SERVER_ERROR</b> - <i>Erro no servidor.</i>"
@@ -211,7 +214,7 @@
                 "description": "Serviço responsável por buscar todos so itens.",
                 "summary": "Busca todas itens",
                 "tags": [
-                    "category-controller"
+                    "item-controller"
                 ],
                 "parameters": [
                     {
@@ -327,6 +330,37 @@
             }
         },
         "/api/item/{id}": {
+            "get": {
+                "description": "Serviço responsável por buscar um item.",
+                "summary": "Busca um item",
+                "tags": [
+                    "item-controller"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": "true",
+                        "type": "string",
+                        "value": "1",
+                        "description": "Parâmetro que seleciona qual item foi selecionado."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "<b>REQUEST_SUCCESS</b> - <i>Busca realizada com sucesso.</i>"
+                    },
+                    "400": {
+                        "description": "<b>DATA_INVALID</b> - <i>ID do Item inválido.</i>"
+                    },
+                    "404": {
+                        "description": "<b>DATA_NOT_FOUND</b> - <i>Item inexistente.</i>"
+                    },
+                    "500": {
+                        "description": "<b>INTERNAL_SERVER_ERROR</b> - <i>Erro no servidor.</i>"
+                    }
+                }
+            },
             "delete": {
                 "description": "Serviço responsável por deletar um item.",
                 "summary": "Deleta item",

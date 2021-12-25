@@ -371,6 +371,44 @@ class ItemController {
             });
         }
     }
+
+    // Função que busca apenas um item
+    async getItemById(req, res) {
+        let { id } = req.params;
+
+        if (!(id >= 1)) {
+            return res.status(status.BAD_REQUEST).json({
+                status: res.statusCode,
+                statusKey: statusKey.DATA_INVALID,
+                message: 'ID do Item inválido.'
+            });
+        }
+
+        try {
+            let item = await Item.findOne({ where: { id } });
+
+            if (item) {
+                return res.status(status.OK).json({
+                    status: res.statusCode,
+                    statusKey: statusKey.REQUEST_SUCCESS,
+                    item,
+                    message: 'Busca realizada com sucesso.'
+                });
+            } else {
+                return res.status(status.NOT_FOUND).json({
+                    status: res.statusCode,
+                    statusKey: statusKey.DATA_NOT_FOUND,
+                    message: 'Item inexistente.'
+                });
+            }
+        } catch (err) {
+            return res.status(status.INTERNAL_SERVER_ERROR).json({
+                status: res.statusCode,
+                statusKey: statusKey.INTERNAL_SERVER_ERROR,
+                message: err.message
+            });
+        }
+    }
 }
 
 module.exports = new ItemController();
