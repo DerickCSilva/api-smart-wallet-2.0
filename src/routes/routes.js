@@ -19,6 +19,7 @@ router.delete('/category/:id', CategoryController.deleteCategory);
 // Rotas Items
 router.get('/items/:page', ItemController.getAllItems);
 router.get('/item/:id', ItemController.getItemById);
+router.get('/item/record/:id', ItemController.getRecordById);
 router.post('/item', ItemController.createItem);
 router.post('/item/record', ItemController.createRecord);
 router.put('/item', ItemController.editItem);

@@ -13,6 +13,7 @@ const Item = connection.define('items', {
 });
 
 Category.hasMany(Item);
+Item.belongsTo(Category);
 
 Item.sync({ force: false })
     .then(() => console.log('Tabela de Itens criada!'))
