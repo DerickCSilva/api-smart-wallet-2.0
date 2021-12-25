@@ -133,7 +133,7 @@ class CategoryController {
 
             if (category) {
                 let items = category.items;
-                
+
                 if (items.length == 0) {
                     await Category.destroy({ where: { id } });
 
@@ -170,8 +170,8 @@ class CategoryController {
     // Função que busca todas as categorias
     async getAllCategories(req, res) {
         let { page } = req.params || 1;
-        
-        if(!(page >= 1)) {
+
+        if (!(page >= 1)) {
             return res.status(status.BAD_REQUEST).json({
                 status: res.statusCode,
                 statusKey: statusKey.DATA_INVALID,
@@ -212,6 +212,46 @@ class CategoryController {
             });
         } catch (err) {
             console.error(err);
+            return res.status(status.INTERNAL_SERVER_ERROR).json({
+                status: res.statusCode,
+                statusKey: statusKey.INTERNAL_SERVER_ERROR,
+                message: err.message
+            });
+        }
+    }
+
+    // Função que busca apenas uma categoria
+    async getCategoryById(req, res) {
+        let { id } = req.params;
+        let category;
+
+        if (!(id >= 1)) {
+            return res.status(status.BAD_REQUEST).json({
+                status: res.statusCode,
+                statusKey: statusKey.DATA_INVALID,
+                message: 'ID da Categoria inválido.'
+            });
+        }
+
+        try {
+            category = await Category.findOne({ where: { id } });
+
+            if (category) {
+                return res.status(status.OK).json({
+                    status: res.statusCode,
+                    statusKey: statusKey.REQUEST_SUCCESS,
+                    category,
+                    message: 'Busca realizada com sucesso.'
+                });
+            } else {
+                return res.status(status.NOT_FOUND).json({
+                    status: res.statusCode,
+                    statusKey: statusKey.DATA_NOT_FOUND,
+                    message: 'Categoria inexistente.'
+                    
+                });
+            }
+        } catch (err) {
             return res.status(status.INTERNAL_SERVER_ERROR).json({
                 status: res.statusCode,
                 statusKey: statusKey.INTERNAL_SERVER_ERROR,
