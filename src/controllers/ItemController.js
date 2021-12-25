@@ -321,47 +321,22 @@ class ItemController {
 
     // Função que busca todos os itens
     async getAllItems(req, res) {
-        let { page } = req.params;
-
-        if (!(page >= 1)) {
-            return res.status(status.BAD_REQUEST).json({
-                status: res.statusCode,
-                statusKey: statusKey.DATA_INVALID,
-                message: 'Número da página inválida.'
-            });
-        }
-
         try {
-            // Definindo a partir de qual registro da tabela será feito a busca
-            let limit = 10;
-            let offset = isNaN(page) || page == 1 ? 0 : (parseInt(page) - 1) * limit;
-
-            let items = await Item.findAll({
-                limit,
-                offset,
-                order: [
-                    ['id', 'desc']
-                ],
-                include: [{ model: Category }]
-            });
-
-            let nextItems = await Item.findAll({
-                limit,
-                offset: offset + 10,
-                order: [
-                    ['id', 'desc']
+            let categories = await Category.findAll({
+                attributes: ['id', 'name', 'type', 'pre_pos'],
+                include: [
+                    { 
+                        model: Item,
+                        attributes: ['id', 'name']
+                    }
                 ]
             });
-
-            let hasNextPage = nextItems.length > 0 ? true : false;
 
             return res.status(status.OK).json({
                 status: res.statusCode,
                 statusKey: statusKey.REQUEST_SUCCESS,
-                items,
-                nextPage: parseInt(page) + 1,
-                hasNextPage,
-                message: `Itens da página ${page}.`
+                categories,
+                message: `Busca realizada com sucesso.`
             });
         } catch (err) {
             console.error(err);
@@ -386,7 +361,16 @@ class ItemController {
         }
 
         try {
-            let item = await Item.findOne({ where: { id }, include: [{ model: Category }] });
+            let item = await Item.findOne({
+                attributes: ['id', 'name'],
+                where: { id },
+                include: [
+                    {
+                        model: Category,
+                        attributes: ['id', 'name', 'type', 'pre_pos']
+                    }
+                ]
+            });
 
             if (item) {
                 return res.status(status.OK).json({

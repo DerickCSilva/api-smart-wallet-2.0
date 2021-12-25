@@ -209,29 +209,16 @@
                 }
             }
         },
-        "/api/items/{page}": {
+        "/api/items": {
             "get": {
-                "description": "Serviço responsável por buscar todos so itens.",
-                "summary": "Busca todas itens",
+                "description": "Serviço responsável por buscar todos os itens.",
+                "summary": "Busca todos itens",
                 "tags": [
                     "item-controller"
                 ],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "page",
-                        "required": "true",
-                        "type": "string",
-                        "value": "1",
-                        "description": "Parâmetro que seleciona qual página deseja visualizar."
-                    }
-                ],
                 "responses": {
                     "200": {
-                        "description": "<b>REQUEST_SUCCESS</b> - <i>Itens da página {paginaAtual}.</i>"
-                    },
-                    "400": {
-                        "description": "<b>DATA_INVALID</b> - <i>Número da página inválida.</i>"
+                        "description": "<b>REQUEST_SUCCESS</b> - <i>Busca realizada com sucesso.</i>"
                     },
                     "500": {
                         "description": "<b>INTERNAL_SERVER_ERROR</b> - <i>Erro no servidor.</i>"

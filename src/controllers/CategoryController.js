@@ -189,7 +189,8 @@ class CategoryController {
                 offset,
                 order: [
                     ['id', 'desc']
-                ]
+                ],
+                attributes: ['id', 'name', 'type', 'pre_pos']
             });
 
             let nextCategories = await Category.findAll({
@@ -234,7 +235,16 @@ class CategoryController {
         }
 
         try {
-            category = await Category.findOne({ where: { id } });
+            category = await Category.findOne({
+                where: { id },
+                attributes: ['id', 'name', 'type', 'pre_pos'],
+                include: [
+                    {
+                        model: Item,
+                        attributes: ['id', 'name']
+                    }
+                ]
+            });
 
             if (category) {
                 return res.status(status.OK).json({
