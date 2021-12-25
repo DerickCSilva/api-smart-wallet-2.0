@@ -248,7 +248,6 @@ class CategoryController {
                     status: res.statusCode,
                     statusKey: statusKey.DATA_NOT_FOUND,
                     message: 'Categoria inexistente.'
-                    
                 });
             }
         } catch (err) {
