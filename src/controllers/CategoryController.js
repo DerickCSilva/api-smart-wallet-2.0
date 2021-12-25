@@ -166,6 +166,59 @@ class CategoryController {
             });
         }
     }
+
+    // Função que busca todas as categorias
+    async getAllCategories(req, res) {
+        let { page } = req.params || 1;
+        
+        if(!(page >= 1)) {
+            return res.status(status.BAD_REQUEST).json({
+                status: res.statusCode,
+                statusKey: statusKey.DATA_INVALID,
+                message: 'Número da página inválida.'
+            });
+        }
+
+        try {
+            // Definindo a partir de qual registro da tabela será feito a busca
+            let limit = 10;
+            let offset = isNaN(page) || page == 1 ? 0 : (parseInt(page) - 1) * limit;
+
+            let categories = await Category.findAll({
+                limit,
+                offset,
+                order: [
+                    ['id', 'desc']
+                ]
+            });
+
+            let nextCategories = await Category.findAll({
+                limit,
+                offset: offset + 10,
+                order: [
+                    ['id', 'desc']
+                ]
+            });
+
+            let hasNextPage = nextCategories.length > 0 ? true : false;
+
+            return res.status(status.OK).json({
+                status: res.statusCode,
+                statusKey: statusKey.REQUEST_SUCCESS,
+                categories,
+                nextPage: parseInt(page) + 1,
+                hasNextPage,
+                message: `Categorias da página ${page}.`
+            });
+        } catch (err) {
+            console.error(err);
+            return res.status(status.INTERNAL_SERVER_ERROR).json({
+                status: res.statusCode,
+                statusKey: statusKey.INTERNAL_SERVER_ERROR,
+                message: err.message
+            });
+        }
+    }
 }
 
 module.exports = new CategoryController();

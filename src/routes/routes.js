@@ -10,6 +10,7 @@ let ItemController = require("../controllers/ItemController");
 router.get('/', IndexController.index);
 
 // Rotas Categorias
+router.get('/categories/:page', CategoryController.getAllCategories);
 router.post('/category', CategoryController.createCategory);
 router.put('/category', CategoryController.editCategory);
 router.delete('/category/:id', CategoryController.deleteCategory);
@@ -20,5 +21,6 @@ router.post('/item/record', ItemController.createRecord);
 router.put('/item', ItemController.editItem);
 router.put('/item/record', ItemController.editRecord);
 router.delete('/item/:id', ItemController.deleteItem);
+router.delete('/item/record/:id', ItemController.deleteRecord);
 
 module.exports = router;

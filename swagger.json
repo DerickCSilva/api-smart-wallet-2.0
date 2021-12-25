@@ -17,6 +17,36 @@
         }
     ],
     "paths": {
+        "/api/categories/{page}": {
+            "get": {
+                "description": "Serviço responsável por buscar todas as categorias.",
+                "summary": "Busca todas categorias",
+                "tags": [
+                    "category-controller"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "page",
+                        "required": "true",
+                        "type": "string",
+                        "value": "1",
+                        "description": "Parâmetro que seleciona qual página deseja visualizar."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "<b>REQUEST_SUCCESS</b> - <i>Categorias da página {paginaAtual}.</i>"
+                    },
+                    "400": {
+                        "description": "<b>DATA_INVALID</b> - <i>Número da página inválida.</i>"
+                    },
+                    "500": {
+                        "description": "<b>INTERNAL_SERVER_ERROR</b> - <i>Erro no servidor.</i>"
+                    }
+                }
+            }
+        },
         "/api/category": {
             "post": {
                 "description": "Serviço responsável por criar categoria.",
@@ -134,7 +164,7 @@
                         "description": "<b>DATA_DELETED</b> - <i>Categoria deletada com sucessso.</i>"
                     },
                     "400": {
-                        "description": "<b>DATA_NOT_INFORMED</b> - <i>Dado não informado na requisição.</i><br><b>DATA_EXISTS</b> - <i>Já existe uma categoria com esse nome.</i>"
+                        "description": "<b>DATA_NOT_INFORMED</b> - <i>Dado não informado na requisição.</i>"
                     },
                     "404": {
                         "description": "<b>DATA_NOT_FOUND</b> - <i>Categoria inexistente.</i>"
@@ -238,7 +268,6 @@
                 }
             }
         },
-        
         "/api/item/{id}": {
             "delete": {
                 "description": "Serviço responsável por deletar um item.",
@@ -253,7 +282,7 @@
                         "required": "true",
                         "type": "string",
                         "value": "1",
-                        "description": "Parâmetro que identifica o item selecionada."
+                        "description": "Parâmetro que identifica o item selecionado."
                     }
                 ],
                 "responses": {
@@ -261,7 +290,7 @@
                         "description": "<b>DATA_DELETED</b> - <i>Item deletado com sucessso.</i>"
                     },
                     "400": {
-                        "description": "<b>DATA_NOT_INFORMED</b> - <i>Dado não informado na requisição.</i><br><b>DATA_EXISTS</b> - <i>Já existe uma categoria com esse nome.</i>"
+                        "description": "<b>DATA_NOT_INFORMED</b> - <i>Dado não informado na requisição.</i>"
                     },
                     "404": {
                         "description": "<b>DATA_NOT_FOUND</b> - <i>Item inexistente.</i>"
@@ -364,6 +393,39 @@
                 "responses": {
                     "200": {
                         "description": "<b>UPDATED_SUCCESS</b> - <i>Registro do Item {nomeDoItem} alterado com sucessso.</i>"
+                    },
+                    "400": {
+                        "description": "<b>DATA_NOT_INFORMED</b> - <i>Dado não informado na requisição.</i>"
+                    },
+                    "404": {
+                        "description": "<b>DATA_NOT_FOUND</b> - <i>Registro inexistente.</i>"
+                    },
+                    "500": {
+                        "description": "<b>INTERNAL_SERVER_ERROR</b> - <i>Erro no servidor.</i>"
+                    }
+                }
+            }
+        },
+        "/api/item/record/{id}": {
+            "delete": {
+                "description": "Serviço responsável por deletar um registro do item.",
+                "summary": "Deleta registro do item",
+                "tags": [
+                    "item-controller"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": "true",
+                        "type": "string",
+                        "value": "1",
+                        "description": "Parâmetro que identifica o registro selecionado."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "<b>DATA_DELETED</b> - <i>Registro deletado com sucessso.</i>"
                     },
                     "400": {
                         "description": "<b>DATA_NOT_INFORMED</b> - <i>Dado não informado na requisição.</i>"

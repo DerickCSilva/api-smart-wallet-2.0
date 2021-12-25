@@ -238,7 +238,7 @@ class ItemController {
 
         try {
             let item = await Item.findOne({ where: { id }, include: [{ model: RegItem }] });
-            
+
             if (item) {
                 let reg_items = item.reg_items;
 
@@ -273,7 +273,50 @@ class ItemController {
                 message: err.message
             });
         }
-        
+
+    }
+
+    // Função que deleta um registro de um item
+    async deleteRecord(req, res) {
+        let { id } = req.params;
+
+        try {
+            await existsOrError(id, 'ID do registro do item não informado.');
+        } catch (err) {
+            return res.status(status.BAD_REQUEST).json({
+                status: res.statusCode,
+                statusKey: statusKey.DATA_NOT_INFORMED,
+                message: err
+            });
+        }
+
+        try {
+            let reg = await RegItem.findOne({ where: { id } });
+
+            if (reg) {
+                await RegItem.destroy({ where: { id } });
+
+                return res.status(status.OK).json({
+                    status: res.statusCode,
+                    statusKey: statusKey.DATA_DELETED,
+                    message: 'Registro deletado com sucessso.'
+                });
+            } else {
+                return res.status(status.NOT_FOUND).json({
+                    status: res.statusCode,
+                    statusKey: statusKey.DATA_NOT_FOUND,
+                    message: 'Registro inexistente.'
+                });
+            }
+        } catch (err) {
+            console.log(err);
+            return res.status(status.INTERNAL_SERVER_ERROR).json({
+                status: res.statusCode,
+                statusKey: statusKey.INTERNAL_SERVER_ERROR,
+                message: err.message
+            });
+        }
+
     }
 }
 
