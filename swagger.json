@@ -499,6 +499,37 @@
             }
         },
         "/api/item/record/{id}": {
+            "get": {
+                "description": "Serviço responsável por buscar um registro de um item.",
+                "summary": "Busca um registro de um item",
+                "tags": [
+                    "item-controller"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": "true",
+                        "type": "string",
+                        "value": "1",
+                        "description": "Parâmetro que seleciona qual registro foi selecionado."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "<b>REQUEST_SUCCESS</b> - <i>Busca realizada com sucesso.</i>"
+                    },
+                    "400": {
+                        "description": "<b>DATA_INVALID</b> - <i>ID do Registro inválido.</i>"
+                    },
+                    "404": {
+                        "description": "<b>DATA_NOT_FOUND</b> - <i>Registro inexistente.</i>"
+                    },
+                    "500": {
+                        "description": "<b>INTERNAL_SERVER_ERROR</b> - <i>Erro no servidor.</i>"
+                    }
+                }
+            },
             "delete": {
                 "description": "Serviço responsável por deletar um registro do item.",
                 "summary": "Deleta registro do item",

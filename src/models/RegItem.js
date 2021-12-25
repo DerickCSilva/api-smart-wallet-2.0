@@ -21,6 +21,7 @@ const RegItems = connection.define('reg_items', {
 });
 
 Item.hasMany(RegItems);
+RegItems.belongsTo(Item);
 
 RegItems.sync({ force: false })
     .then(() => console.log('Tabela de registros dos itens criada!'))

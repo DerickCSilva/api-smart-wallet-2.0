@@ -13,6 +13,7 @@ const RegInvestment = connection.define('reg_investment', {
 });
 
 Investment.hasMany(RegInvestment);
+RegInvestment.belongsTo(Investment);
 
 RegInvestment.sync({ force: false })
     .then(() => console.log('Tabela de registros dos investimentos criada!'))

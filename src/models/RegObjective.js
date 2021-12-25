@@ -13,6 +13,7 @@ const RegObjective = connection.define('reg_objective', {
 });
 
 Objective.hasMany(RegObjective);
+RegObjective.belongsTo(Objective);
 
 RegObjective.sync({ force: false })
     .then(() => console.log('Tabela de registros dos objetivos criada!'))

@@ -335,13 +335,14 @@ class ItemController {
             // Definindo a partir de qual registro da tabela será feito a busca
             let limit = 10;
             let offset = isNaN(page) || page == 1 ? 0 : (parseInt(page) - 1) * limit;
-            
+
             let items = await Item.findAll({
                 limit,
                 offset,
                 order: [
                     ['id', 'desc']
-                ]
+                ],
+                include: [{ model: Category }]
             });
 
             let nextItems = await Item.findAll({
@@ -351,7 +352,7 @@ class ItemController {
                     ['id', 'desc']
                 ]
             });
-            
+
             let hasNextPage = nextItems.length > 0 ? true : false;
 
             return res.status(status.OK).json({
@@ -385,7 +386,7 @@ class ItemController {
         }
 
         try {
-            let item = await Item.findOne({ where: { id } });
+            let item = await Item.findOne({ where: { id }, include: [{ model: Category }] });
 
             if (item) {
                 return res.status(status.OK).json({
@@ -399,6 +400,59 @@ class ItemController {
                     status: res.statusCode,
                     statusKey: statusKey.DATA_NOT_FOUND,
                     message: 'Item inexistente.'
+                });
+            }
+        } catch (err) {
+            return res.status(status.INTERNAL_SERVER_ERROR).json({
+                status: res.statusCode,
+                statusKey: statusKey.INTERNAL_SERVER_ERROR,
+                message: err.message
+            });
+        }
+    }
+
+    // Função que busca apenas um registro do item
+    async getRecordById(req, res) {
+        let { id } = req.params;
+
+        if (!(id >= 1)) {
+            return res.status(status.BAD_REQUEST).json({
+                status: res.statusCode,
+                statusKey: statusKey.DATA_INVALID,
+                message: 'ID do Registro inválido.'
+            });
+        }
+
+        try {
+            let reg = await RegItem.findOne({
+                attributes: ['id', 'value', 'desc', 'date'],
+                where: { id },
+                include: [
+                    {
+                        model: Item,
+                        attributes: ['id', 'name'],
+                        include: [
+                            {
+                                model: Category,
+                                attributes: ['id', 'name', 'type', 'pre_pos']
+                            }
+                        ]
+                    }
+                ]
+            });
+
+            if (reg) {
+                return res.status(status.OK).json({
+                    status: res.statusCode,
+                    statusKey: statusKey.REQUEST_SUCCESS,
+                    record: reg,
+                    message: 'Busca realizada com sucesso.'
+                });
+            } else {
+                return res.status(status.NOT_FOUND).json({
+                    status: res.statusCode,
+                    statusKey: statusKey.DATA_NOT_FOUND,
+                    message: 'Registro inexistente.'
                 });
             }
         } catch (err) {
