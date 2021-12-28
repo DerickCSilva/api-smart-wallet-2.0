@@ -5,9 +5,11 @@ const status = require('http-status-codes');
 const Item = require('../models/Item');
 const RegItem = require('../models/RegItem');
 const Category = require('../models/Category');
+const { Op } = require('sequelize');
 
 // Functions
 const { existsOrError } = require('../functions/Validation');
+const { selectDays } = require('../functions/Date');
 
 // ENUM's
 const statusKey = require('../utils/statusCode.enum');
@@ -25,17 +27,17 @@ class ItemController {
             let item = await Item.findOne({ where: { name } });
             let category = await Category.findOne({ where: { id: categoryId } });
 
-            if (item) {
-                return res.status(status.BAD_REQUEST).json({
-                    status: res.statusCode,
-                    statusKey: statusKey.DATA_EXISTS,
-                    message: `Já existe um item com esse nome na categoria ${category.name}.`
-                });
-            } else if (!category) {
+            if (!category) {
                 return res.status(status.NOT_FOUND).json({
                     status: res.statusCode,
                     statusKey: statusKey.DATA_NOT_FOUND,
                     message: 'Categoria inexistente.'
+                });
+            } else if (item) {
+                return res.status(status.BAD_REQUEST).json({
+                    status: res.statusCode,
+                    statusKey: statusKey.DATA_EXISTS,
+                    message: `Já existe um item com esse nome na categoria ${category.name}.`
                 });
             }
 
@@ -325,7 +327,7 @@ class ItemController {
             let categories = await Category.findAll({
                 attributes: ['id', 'name', 'type', 'pre_pos'],
                 include: [
-                    { 
+                    {
                         model: Item,
                         attributes: ['id', 'name']
                     }
@@ -387,6 +389,62 @@ class ItemController {
                 });
             }
         } catch (err) {
+            return res.status(status.INTERNAL_SERVER_ERROR).json({
+                status: res.statusCode,
+                statusKey: statusKey.INTERNAL_SERVER_ERROR,
+                message: err.message
+            });
+        }
+    }
+
+    // Função que busca todos os itens
+    async getAllRecords(req, res) {
+        let { date } = req.params;
+        let { startDate, endDate } = selectDays(date);
+
+        try {
+            let categories = await Category.findAll({
+                attributes: ['id', 'name', 'type', 'pre_pos'],
+                include: [
+                    {
+                        model: Item,
+                        attributes: ['id', 'name'],
+                        include: [
+                            {
+                                model: RegItem,
+                                attributes: ['id', 'value', 'desc', 'date'],
+                                where: {
+                                    date: {
+                                        [Op.gte]: startDate,
+                                        [Op.lte]: endDate 
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            });
+
+            categories.map(category => {
+                let rowspanCategory = 0;
+                category.items.map(item => {
+                    rowspanCategory += item.reg_items.length;
+                    item.dataValues.rowspanItem = item.reg_items.length || 1;
+                });
+                category.dataValues.rowspanCategory = rowspanCategory || 1;
+                return category;
+            });
+
+            return res.json(categories);
+
+            return res.status(status.OK).json({
+                status: res.statusCode,
+                statusKey: statusKey.REQUEST_SUCCESS,
+                categories,
+                message: `Busca realizada com sucesso.`
+            });
+        } catch (err) {
+            console.error(err);
             return res.status(status.INTERNAL_SERVER_ERROR).json({
                 status: res.statusCode,
                 statusKey: statusKey.INTERNAL_SERVER_ERROR,

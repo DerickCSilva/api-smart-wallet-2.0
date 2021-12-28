@@ -41,5 +41,5 @@ app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 app.listen(3000, () => {
     setTimeout(() => {
         console.log('Backend rodando: http://localhost:3000/ 🚀...');        
-    }, 200);
+    }, 400);
 });

@@ -209,6 +209,33 @@
                 }
             }
         },
+        "/api/records/{date}": {
+            "get": {
+                "description": "Serviço responsável por buscar todos os registros do mês selecionado.",
+                "summary": "Busca todos os registros do mês selecionado",
+                "tags": [
+                    "item-controller"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "date",
+                        "required": "true",
+                        "type": "string",
+                        "value": "2021-12",
+                        "description": "Parâmetro que seleciona qual categoria foi selecionada."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "<b>REQUEST_SUCCESS</b> - <i>Busca realizada com sucesso.</i>"
+                    },
+                    "500": {
+                        "description": "<b>INTERNAL_SERVER_ERROR</b> - <i>Erro no servidor.</i>"
+                    }
+                }
+            }
+        },
         "/api/items": {
             "get": {
                 "description": "Serviço responsável por buscar todos os itens.",
