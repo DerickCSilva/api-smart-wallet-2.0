@@ -223,7 +223,7 @@
                         "required": "true",
                         "type": "string",
                         "value": "2021-12",
-                        "description": "Parâmetro que seleciona qual categoria foi selecionada."
+                        "description": "Parâmetro que seleciona qual mês e ano foi selecionado."
                     }
                 ],
                 "responses": {

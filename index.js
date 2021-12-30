@@ -37,9 +37,9 @@ app.use(morgan('dev'));
 app.use('/api', routes);
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
-// Listen on port 3434
+// Listen on port 3000
 app.listen(3000, () => {
     setTimeout(() => {
         console.log('Backend rodando: http://localhost:3000/ 🚀...');        
-    }, 400);
+    }, 800);
 });

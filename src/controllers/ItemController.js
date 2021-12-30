@@ -9,7 +9,7 @@ const { Op } = require('sequelize');
 
 // Functions
 const { existsOrError } = require('../functions/Validation');
-const { selectDays } = require('../functions/Date');
+const { selectDays } = require('../functions/FormatDate');
 
 // ENUM's
 const statusKey = require('../utils/statusCode.enum');
@@ -400,7 +400,7 @@ class ItemController {
     // Função que busca todos os itens
     async getAllRecords(req, res) {
         let { date } = req.params;
-        let { startDate, endDate } = selectDays(date);
+        let { firstDay, lastDay, monthString } = await selectDays(date);
 
         try {
             let categories = await Category.findAll({
@@ -415,8 +415,8 @@ class ItemController {
                                 attributes: ['id', 'value', 'desc', 'date'],
                                 where: {
                                     date: {
-                                        [Op.gte]: startDate,
-                                        [Op.lte]: endDate 
+                                        [Op.gte]: firstDay,
+                                        [Op.lte]: lastDay 
                                     }
                                 }
                             }
@@ -425,23 +425,12 @@ class ItemController {
                 ]
             });
 
-            categories.map(category => {
-                let rowspanCategory = 0;
-                category.items.map(item => {
-                    rowspanCategory += item.reg_items.length;
-                    item.dataValues.rowspanItem = item.reg_items.length || 1;
-                });
-                category.dataValues.rowspanCategory = rowspanCategory || 1;
-                return category;
-            });
-
-            return res.json(categories);
-
             return res.status(status.OK).json({
                 status: res.statusCode,
+                monthString: monthString || 'Mês inválido!',
                 statusKey: statusKey.REQUEST_SUCCESS,
                 categories,
-                message: `Busca realizada com sucesso.`
+                message: 'Busca realizada com sucesso.'
             });
         } catch (err) {
             console.error(err);
